@@ -1,0 +1,20 @@
+import pandas as pd
+from shareplum import Site
+from requests_ntlm import HttpNtlmAuth
+
+# SharePoint URL and credentials
+url = 'https://sharepoint.xxx.com/sites/org/'
+username = 'your_username'
+password = 'your_password'
+
+# Connect to SharePoint
+auth = HttpNtlmAuth(username, password)
+site = Site(url, auth=auth, verify_ssl=False)
+
+# Get list data
+sp_list = site.List('list name in my share point')
+data = sp_list.GetListItems('All Items', rowlimit=200)
+
+# Convert to pandas dataframe
+data_df = pd.DataFrame(data[0:])
+data_df.to_excel("data.xlsx")
